@@ -491,7 +491,7 @@ window.__ModuleLoader__.load({
     }
 
     exports.apply = apply
-    exports.inject = []
+    exports.inject = ['slots']
     return module.exports
   },
 })
