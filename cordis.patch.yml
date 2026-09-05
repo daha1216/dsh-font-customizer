@@ -1,0 +1,7 @@
+# dsh-font-customizer 挂载声明 —— 把字体自定义插件行插入 DSH 配置树。
+# name 解析到包入口 dsh/index.js（宿主半侧）；
+# package.json 的 dsh.client 声明让模块系统同时把本包扫描为浏览器插件，
+# 页面通过 /plugins/dsh-font-customizer/client.js 拿到客户端半侧。
+- insert:
+    - id: font-customizer
+      name: 'dsh-font-customizer'

@@ -1,0 +1,46 @@
+{
+  "name": "dsh-font-customizer",
+  "version": "0.1.0",
+  "description": "Customize the DeepSeek Harness Web UI fonts: UI font family, code font family, and content font size. Settings persist on the host, with local-font detection and full local font scanning.",
+  "type": "module",
+  "main": "./dsh/index.js",
+  "exports": {
+    ".": "./dsh/index.js",
+    "./client": "./dsh/client.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dsh",
+    "cordis.patch.yml",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "deepseek-harness",
+    "font",
+    "typeface",
+    "cordis"
+  ],
+  "author": "daha1216",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/daha1216/dsh-font-customizer.git"
+  },
+  "bugs": {
+    "url": "https://github.com/daha1216/dsh-font-customizer/issues"
+  },
+  "homepage": "https://github.com/daha1216/dsh-font-customizer#readme",
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "inject": [],
+      "platform": "web",
+      "immediately": true
+    }
+  }
+}
