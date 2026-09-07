@@ -3,8 +3,9 @@
 本目录是 **dsh-pocket 插件「安装态 + 本地补丁」** 的快照。上游插件通过 pnpm 安装在
 `~/.dsh/profiles/web/node_modules/dsh-pocket`（v2.10.3，锁定 `github:shaobeichen/dsh-pocket` tarball eb25503），
 本地在其上打了手机端兼容补丁。**任何 pnpm 重装（包括市场自动更新其他插件引发的 relink）
-都会把 node_modules 恢复成上游原样、清掉本地补丁** —— 已发生三次（07 日 20:00 / 23:04、
-08 日 02:23）。第三次已用本文路径 A + 重启在几分钟内恢复，流程可用。
+都会把 node_modules 恢复成上游原样、清掉本地补丁** —— 曾发生三次（07 日 20:00 / 23:04、
+08 日 02:23）。08 日起补丁已"写死"（见下文「写死机制」），pocket 理论上不会再被冲掉；
+万一失效，本文路径 A + 重启仍是完整恢复手段。
 
 ## 内容
 
@@ -12,9 +13,9 @@
 | --- | --- |
 | `plugins/dsh-pocket/` | 打完补丁的完整插件目录（49 文件，845 KB），含 `lib/proxy.mjs`（401 自愈、手机诊断脚本注入、preservedQuery / handshake 刷新、forceLoopback）、`client/mobile/mobile-apply.tsx`（适配器）、`client/mobile/upstream/`（上游 dsh-web-mobile v2.3.0 镜像 25 文件）、`client/client.js`（已构建 bundle，移植层已打包在内；校验标记用 `POCKET_EXTRA_CSS` / `fileGuard`，`upstreamApply` 是标识符会被 esbuild 改名、在 bundle 里查不到）、`PORTING.md` |
 | `patches/` | 24 个补丁步骤 JSON（seq-454 → seq-2563，从会话转录 `session.v2.jsonl.zstd` 恢复的 write/edit 原文），供 `replay-patches.mjs` 重放 |
-| `tools/dsh-pocket/` | 6 个维护脚本：`apply-rc1-mobile-compat.ps1`（rc.1 loopback 补丁）、`sync-dsh-web-mobile.mjs`（upstream 镜像 + esbuild 重建）、`detached-restart.cjs`（25s 熔断重启）、`apply-pin-patch.ps1`、`patch-native-tostring.mjs`、`ssl-recovery-watch.mjs` |
+| `tools/dsh-pocket/` | 9 个维护脚本：`apply-rc1-mobile-compat.ps1`（rc.1 loopback 补丁）、`sync-dsh-web-mobile.mjs`（upstream 镜像 + esbuild 重建）、`detached-restart.cjs`（25s 熔断重启）、`detached-install-restart.cjs`（杀 web → install → 重启）、`detached-patch-orchestrator.cjs`（补丁重生成编排）、`auto-restore.mjs`（postinstall 自愈）、`apply-pin-patch.ps1`、`patch-native-tostring.mjs`、`ssl-recovery-watch.mjs` |
 | `tools/restore/` | 补丁重放工具链：`replay-patches.mjs`、`dump-zstd.mjs`（多帧 zstd 转录解压）、`extract-patches.mjs` |
-| `profile/` | 重装 pocket 所需的 4 个 profile 文件：`package.json`、`pnpm-lock.yaml`、`pnpm-workspace.yaml`、`.npmrc` |
+| `profile/` | 重装 pocket 所需的 4 个 profile 文件：`package.json`（含 postinstall 自愈）、`pnpm-lock.yaml`、`pnpm-workspace.yaml`（含 patchedDependencies 登记）、`.npmrc`；另有 `patches/` 子目录（写死补丁本体 `dsh-pocket@2.10.3.patch`） |
 | `MANIFEST.json` | 快照清单 + 补丁标记核验（`patched` 下应全为 `true`） |
 
 敏感文件**从不**入库：`restart-and-setpin.ps1`（明文 PIN）、`cloudflare-api.md`（隧道 token）、
@@ -57,10 +58,31 @@ node "%USERPROFILE%\.dsh\dsh-pocket\detached-restart.cjs"
 
 25s 熔断后杀 3080 监听进程并拉起新实例（会断当前会话，转录落盘可恢复）。
 
+## 写死机制（2026-09-08 起启用）
+
+- **pnpm patchedDependencies**：`profile/pnpm-workspace.yaml` 登记
+  `dsh-pocket@2.10.3 -> patches/dsh-pocket@2.10.3.patch`（610KB，纯新增+修改、零删除条目）。
+  任何 pnpm install（含市场更新引发的全量 relink）都会自动把全部定制打回：
+  `lib/proxy.mjs` 补丁、mobile 适配器、`client/client.js` 已构建 bundle、`upstream/` 镜像、`PORTING.md`。
+- **postinstall 自愈**：`profile/package.json` 的 `postinstall -> auto-restore.mjs`
+  在每次 install 后重注入 dsh-pet 手机守卫，并在 pocket 意外失补（版本一致时）从备份快照整体拷回。
+  永远 exit 0（失败不能阻断安装），日志 `~/.dsh/dsh-pocket/auto-restore.log`。
+- **重生成补丁**（pocket 版本升级时）：跑 `tools/dsh-pocket/detached-patch-orchestrator.cjs`
+  —— 分离执行：杀 web → install 洗 lockfile → `pnpm patch` 抽纯净 staging → 备份覆盖 →
+  `pnpm patch-commit` → 校验标记 → 拉起 web。三个必须知道的坑：
+  1. 补丁**不能含删除条目**——pnpm 12 应用器会报 `delete patch left ... non-empty`；
+     退役文件（MobileNavToggle 等 6 个）保留为死代码即可，适配器不引用它们。
+  2. staging 必须是纯净 29 文件：lockfile 里残留 patched 记录时 `pnpm patch` 会抽出带补丁状态；
+     先 `pnpm install` 洗掉（workspace.yaml 无 patchedDependencies 时自动净化 lockfile）。
+  3. staging 目录残留会报 `ERR_PNPM_EDIT_DIR_NOT_EMPTY`，先清 `node_modules/.pnpm_patches`。
+  另：pnpm 12 在安装计划变化时会全量重链 227 包，dsh web 运行时锁住
+  `@electron-internal/extract-zip` 的 .node（os error 5）——install 必须在 web 停止时跑，
+  detached-patch-orchestrator.cjs 已封装该顺序。
+
 ## 其他插件（不在本备份范围）
 
-- **dsh-pet** 手机禁用守卫（wipe 后重跑一次）：
-  `node ~/.dsh/skills/pet-mobile/scripts/set-mobile.mjs --disable --profile web`
+- **dsh-pet** 手机禁用守卫：已由 postinstall 自愈脚本（`auto-restore.mjs`）在每次 install 后
+  自动重注入；手动重跑：`node ~/.dsh/skills/pet-mobile/scripts/set-mobile.mjs --disable --profile web`
 - **@xueayi/dsh-opencode-go-usage** 浮动 dock 的手机端禁用：未纳入备份（原 edit 需从
   会话转录 `seq 583/593/595` 恢复，锚点在 23:04 wipe 后的版本上不再匹配）。
 

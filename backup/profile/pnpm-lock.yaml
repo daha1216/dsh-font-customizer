@@ -4,6 +4,9 @@ settings:
   autoInstallPeers: false
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  dsh-pocket@2.10.3: aad343bdb729861a31f1bbdf4aa48a5f6a212b55775e08d063b960244256a35e
+
 importers:
 
   .:
@@ -43,7 +46,7 @@ importers:
         version: https://codeload.github.com/xxww0098/dsh-plugin-oauth-subs/tar.gz/69bdf60484c7ce918fa9f89b6ebdba405c307e6f
       dsh-pocket:
         specifier: github:shaobeichen/dsh-pocket
-        version: https://codeload.github.com/shaobeichen/dsh-pocket/tar.gz/eb255032991949d95c896f762e681c19e622cbdc
+        version: https://codeload.github.com/shaobeichen/dsh-pocket/tar.gz/eb255032991949d95c896f762e681c19e622cbdc(patch_hash=aad343bdb729861a31f1bbdf4aa48a5f6a212b55775e08d063b960244256a35e)
       dsh-recall-plugin:
         specifier: ^2.3.6
         version: 2.3.6(@deepseek-ai/schemastery@3.18.1)
@@ -1729,7 +1732,7 @@ snapshots:
     dependencies:
       '@deepseek-ai/schemastery': 3.18.1
 
-  dsh-pocket@https://codeload.github.com/shaobeichen/dsh-pocket/tar.gz/eb255032991949d95c896f762e681c19e622cbdc:
+  dsh-pocket@https://codeload.github.com/shaobeichen/dsh-pocket/tar.gz/eb255032991949d95c896f762e681c19e622cbdc(patch_hash=aad343bdb729861a31f1bbdf4aa48a5f6a212b55775e08d063b960244256a35e):
     dependencies:
       qrcode: 1.5.4
       qrcode-terminal: 0.12.0

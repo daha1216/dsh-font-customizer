@@ -1,13 +1,13 @@
 {
-  "time": "2026-09-07T22:37:11.280Z",
+  "time": "2026-09-07T23:05:22.857Z",
   "source": "C:\\Users\\daha\\.dsh\\profiles\\web",
   "only": "dsh-pocket",
   "packages": {
     "dsh-pocket": {
       "version": "2.10.3",
       "spec": "github:shaobeichen/dsh-pocket",
-      "files": 49,
-      "bytes": 865244
+      "files": 55,
+      "bytes": 928360
     }
   },
   "patched": {
@@ -21,6 +21,10 @@
       },
       "client/mobile/mobile-apply.tsx": {
         "upstreamApply": true
+      },
+      "client/client.js": {
+        "POCKET_EXTRA_CSS": true,
+        "fileGuard": true
       }
     }
   }

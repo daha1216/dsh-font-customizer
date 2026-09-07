@@ -29,7 +29,7 @@ const ONLY = (process.argv[2] ?? '').replace(/^--only=/, '') || null // e.g. `no
 const PROFILE_FILES = ONLY
   ? ['package.json', 'pnpm-lock.yaml', 'pnpm-workspace.yaml', '.npmrc'] // pocket-only: files that pin/reinstall dsh-pocket
   : ['package.json', 'pnpm-lock.yaml', 'pnpm-workspace.yaml', 'cordis.yml', 'cordis.patch.yml', 'settings.yaml', '.npmrc']
-const TOOLBOX = ['apply-pin-patch.ps1', 'apply-rc1-mobile-compat.ps1', 'detached-restart.cjs', 'patch-native-tostring.mjs', 'ssl-recovery-watch.mjs', 'sync-dsh-web-mobile.mjs']
+const TOOLBOX = ['apply-pin-patch.ps1', 'apply-rc1-mobile-compat.ps1', 'detached-restart.cjs', 'detached-install-restart.cjs', 'detached-patch-orchestrator.cjs', 'auto-restore.mjs', 'patch-native-tostring.mjs', 'ssl-recovery-watch.mjs', 'sync-dsh-web-mobile.mjs']
 // restart-and-setpin.ps1 故意不备份：内含明文 PIN。
 const EXCLUDE_SUBDIRS = new Set(['node_modules'])
 const EXCLUDE_BY_PKG = { 'dsh-pet': ['assets'] } // 57MB upstream assets, unmodified
@@ -47,7 +47,7 @@ const packages = Object.entries(deps)
 
 // markers of local patches, recorded in MANIFEST for future restores
 const PATCH_MARKERS = {
-  'dsh-pocket': { 'lib/proxy.mjs': ['PHONE_DIAG_SCRIPT', 'preservedQuery', 'DEFAULT_INJECT_WITH_DIAG', 'forceLoopback', 'RANDOM_UUID_POLYFILL'], 'client/mobile/mobile-apply.tsx': ['upstreamApply'] },
+  'dsh-pocket': { 'lib/proxy.mjs': ['PHONE_DIAG_SCRIPT', 'preservedQuery', 'DEFAULT_INJECT_WITH_DIAG', 'forceLoopback', 'RANDOM_UUID_POLYFILL'], 'client/mobile/mobile-apply.tsx': ['upstreamApply'], 'client/client.js': ['POCKET_EXTRA_CSS', 'fileGuard'] },
   'dsh-pet': { 'lib/client.js': ['isMobile'] },
   '@xueayi/dsh-opencode-go-usage': { 'lib/client.js': ['isMobile'] },
 }
@@ -115,6 +115,14 @@ for (const f of PROFILE_FILES) {
   cpSync(src, join(backupDir, 'profile', f))
 }
 console.log(`✓ profile install definition (${PROFILE_FILES.length} files)`)
+
+// pnpm patchedDependencies live in <profile>/patches/ — the hard-wired patch artifact
+const profPatches = join(profileDir, 'patches')
+if (existsSync(profPatches)) {
+  rmSync(join(backupDir, 'profile', 'patches'), { recursive: true, force: true })
+  cpSync(profPatches, join(backupDir, 'profile', 'patches'), { recursive: true })
+  console.log('✓ profile pnpm patches -> backup/profile/patches/')
+}
 
 // ---- pocket recovery toolbox (scripts only, no secrets) ----
 mkdirSync(join(backupDir, 'tools', 'dsh-pocket'), { recursive: true })

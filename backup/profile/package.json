@@ -40,5 +40,8 @@
         "dsh-recall-plugin"
       ]
     }
+  },
+  "scripts": {
+    "postinstall": "node C:/Users/daha/.dsh/dsh-pocket/auto-restore.mjs"
   }
 }

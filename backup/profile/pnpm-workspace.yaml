@@ -116,3 +116,5 @@ minimumReleaseAgeExclude:
   - dsh-pet@0.2.3 || 0.2.6
   - '@hytime/dsh-thinking-effort@0.1.12'
   - dsh-recall-plugin@2.3.6
+patchedDependencies:
+  dsh-pocket@2.10.3: patches/dsh-pocket@2.10.3.patch
