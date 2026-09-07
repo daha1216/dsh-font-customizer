@@ -1097,6 +1097,99 @@ var BASE_CSS = `
   cursor: default;
 }
 
+/* Session-delete confirm / error cards (shown as a bottom overlay, see the
+   delete-dialog wrapper below). Danger-tinted card with a description and
+   two actions. */
+[data-mobile-nav="delete-confirm"] {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px 10px;
+  border: 1px solid var(--dsw-alias-state-error-secondary, rgba(220, 38, 38, .35));
+  border-radius: 12px;
+  background: var(--dsw-alias-interactive-bg-hover-danger, rgba(220, 38, 38, .06));
+}
+[data-mobile-nav="delete-confirm-title"] {
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 18px;
+  color: var(--dsw-alias-state-error-primary, #b91c1c);
+}
+[data-mobile-nav="delete-confirm-desc"] {
+  font-size: 12px;
+  line-height: 17px;
+  color: var(--dsw-alias-label-secondary, inherit);
+}
+[data-mobile-nav="delete-confirm-actions"] {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 2px;
+}
+[data-mobile-nav="delete-confirm-actions"] > button {
+  height: 30px;
+  padding: 0 12px;
+  border: 1px solid var(--dsw-alias-border-l1, rgba(0, 0, 0, .12));
+  border-radius: 10px;
+  background: transparent;
+  color: var(--dsw-alias-label-primary, inherit);
+  font-family: inherit;
+  font-size: 13px;
+  line-height: 20px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+[data-mobile-nav="delete-confirm-yes"] {
+  border-color: var(--dsw-alias-state-error-secondary, rgba(220, 38, 38, .5)) !important;
+  background: var(--dsw-alias-state-error-primary, #dc2626) !important;
+  color: #ffffff !important;
+}
+[data-mobile-nav="delete-confirm-actions"] > button:disabled {
+  opacity: .55;
+  cursor: default;
+}
+[data-mobile-nav="delete-error"] {
+  width: 100%;
+  font-size: 12px;
+  line-height: 17px;
+  color: var(--dsw-alias-state-error-primary, #b91c1c);
+}
+
+/* Bottom overlay for the delete confirm / error card: dimmed backdrop plus a
+   viewport-anchored card above the drawer. [hidden] keeps the error line out
+   of layout until a failure lands. */
+[data-mobile-nav="delete-dialog-backdrop"] {
+  position: fixed;
+  inset: 0;
+  z-index: 55;
+  background: rgba(0, 0, 0, .45);
+  animation: dsh-web-mobile-fade .2s var(--ds-ease-in-out, ease-in-out);
+}
+[data-mobile-nav="delete-dialog"] {
+  position: fixed;
+  left: 8px;
+  right: 8px;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 16px);
+  z-index: 56;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  border-radius: 14px;
+  background: var(--dsw-alias-bg-base, #ffffff);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, .22);
+  animation: dsh-web-mobile-sheet-in .22s var(--ds-ease-out, ease-in-out);
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-mobile-nav="delete-dialog-backdrop"],
+  [data-mobile-nav="delete-dialog"] {
+    animation: none !important;
+  }
+}
+
 /* Floating fallback button (hero / blank phases without a session header).
    The top clears the camera band below the status bar; when the client has
    set viewport-fit=cover the safe-area inset moves it below the notch too. */
@@ -3209,7 +3302,10 @@ var MISC_CSS = `@media (max-width: 1023px) and (pointer: coarse) {
   [data-mobile-nav="session-log"],
   [data-mobile-nav="explorer"],
   [data-mobile-nav="preview-full-toggle"],
-  [data-mobile-nav="drawer-actions"] {
+  [data-mobile-nav="drawer-actions"],
+  [data-mobile-nav="session-delete"],
+  [data-mobile-nav="delete-dialog-backdrop"],
+  [data-mobile-nav="delete-dialog"] {
     display: none !important;
   }
 }
@@ -3773,6 +3869,266 @@ function installSubagentChipTouch(ctx) {
   });
 }
 
+// client/mobile/upstream/effects/session-menu.ts
+var NS2 = "mobileNav";
+var WORKSPACE_NS = "workspace";
+var DELETE_ITEM_MARKER = 'data-mobile-nav="session-delete"';
+var DANGER_COLOR = "var(--dsw-alias-state-error-primary, #b91c1c)";
+var TRASH_SVG = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.4782 4.84067L14.2138 10.1152C14.1102 12.1872 14.067 13.0115 13.3866 13.9607C13.1044 14.3546 12.7498 14.6912 12.3424 14.9535C11.8239 15.2872 11.2415 15.4316 10.5585 15.4998C9.88727 15.5668 9.04946 15.5656 7.99998 15.5656C6.95051 15.5656 6.1127 15.5668 5.44142 15.4998C4.75851 15.4316 4.17602 15.2872 3.65753 14.9535C3.25012 14.6912 2.89559 14.3546 2.61332 13.9607C1.93296 13.0115 1.88979 12.1872 1.78619 10.1152L1.52179 4.84067L2.89006 4.77277L3.15343 10.0463C3.26221 12.2218 3.32452 12.6015 3.72646 13.1624C3.90825 13.4161 4.13686 13.6334 4.39927 13.8023C4.66204 13.9714 5.00263 14.0792 5.57825 14.1367C6.16562 14.1953 6.92298 14.1963 7.99998 14.1963C9.07699 14.1963 9.83434 14.1953 10.4217 14.1367C10.9973 14.0792 11.3379 14.1367 11.6007 13.8023C11.8631 13.6334 12.0917 13.4161 12.2735 13.1624C12.6755 12.6015 12.7378 12.2218 12.8465 10.0463L13.1099 4.77277L14.4782 4.84067ZM5.43011 6.22849H6.7994V11.3909H5.43011V6.22849ZM9.20056 6.22849H10.5699V11.3909H9.20056V6.22849ZM8.53597 0.434431C9.17976 0.434431 9.6522 0.426926 10.0966 0.571258C10.2357 0.616451 10.3717 0.672554 10.502 0.738948C10.9182 0.951107 11.2464 1.29099 11.7015 1.74612L12.4978 2.54136H15.3742V3.91169H0.625732V2.54136H3.50218L4.29845 1.74612C4.75358 1.29099 5.08174 0.951107 5.49801 0.738948C5.62831 0.672554 5.76425 0.616451 5.90334 0.571258C6.34776 0.426926 6.82021 0.434431 7.46399 0.434431H8.53597ZM7.46399 1.80476C6.73208 1.80476 6.51641 1.81187 6.32617 1.87369C6.25545 1.89667 6.18668 1.92533 6.12041 1.95907C5.96398 2.03878 5.82348 2.16253 5.44142 2.54136H10.5585C10.1765 2.16253 10.036 2.03878 9.87955 1.95907C9.81329 1.92533 9.74452 1.89667 9.6738 1.87369C9.48356 1.81187 9.26789 1.80476 8.53597 1.80476H7.46399Z" fill="currentColor" /></svg>';
+function escapeHtml(value) {
+  return value.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
+}
+function installSessionMenuDelete(ctx) {
+  installMobileEffect(ctx, "dsh-web-mobile: session-menu delete", () => {
+    const navT = ctx.locale.bind(NS2);
+    const wsT = (key, params) => ctx.locale.bind(WORKSPACE_NS)(key, params);
+    let anchor = null;
+    let injectRaf = 0;
+    let dialogHost = null;
+    let closeDialogOnKey = null;
+    const resolveSessionId = (row, title) => {
+      const sessions = ctx.sessions.list.getSnapshot();
+      const workspaces = ctx.workspaces.list.getSnapshot();
+      const archived = new Set(workspaces.archivedSessionIds);
+      const candidates = sessions.ids.filter((id) => {
+        const summary = sessions.byId[id];
+        return summary !== void 0 && !summary.blank && summary.displayTitle === title && !archived.has(id);
+      });
+      if (candidates.length === 1) return candidates[0];
+      if (candidates.length === 0) return void 0;
+      const group = row.closest('[class*="_groupSection"]');
+      if (group === null) return void 0;
+      const headerTitle = group.querySelector(':scope > [class*="_projectRow"] [class*="_title"]')?.textContent?.trim();
+      const owned = new Set(workspaces.items.flatMap((workspace2) => workspace2.sessionIds));
+      const workspace = headerTitle === void 0 ? void 0 : workspaces.items.find((candidate) => candidate.title === headerTitle);
+      const workspaceIds = workspace === void 0 ? [] : workspace.sessionIds;
+      const groupIds = workspace === void 0 ? sessions.ids.filter((id) => !owned.has(id) && !archived.has(id) && sessions.byId[id] !== void 0) : workspaceIds.filter((id) => !archived.has(id) && sessions.byId[id] !== void 0);
+      const sameTitleGroupIds = groupIds.filter((id) => sessions.byId[id]?.displayTitle === title);
+      const rows = [...group.querySelectorAll(':scope > [class*="_sessionRow"]')];
+      const rowIndex = rows.indexOf(row);
+      const sameTitleBefore = rowIndex === -1 ? 0 : rows.slice(0, rowIndex).filter(
+        (candidate) => candidate.querySelector('[class*="_title"]')?.textContent?.trim() === title
+      ).length;
+      return sameTitleGroupIds[sameTitleBefore];
+    };
+    const isSessionMenu = (menu) => {
+      const labels = [...menu.querySelectorAll('[role="menuitem"] [class*="_itemLabel"]')].map((element) => element.textContent?.trim() ?? "");
+      const rename = wsT("rename");
+      const fork = wsT("menu.fork");
+      const archive = wsT("menu.archiveSession");
+      return labels.length === 3 && labels.includes(rename) && labels.includes(fork) && labels.includes(archive);
+    };
+    const closeDialog = () => {
+      if (closeDialogOnKey !== null) {
+        document.removeEventListener("keydown", closeDialogOnKey, true);
+        closeDialogOnKey = null;
+      }
+      if (dialogHost !== null) {
+        dialogHost.backdrop.remove();
+        dialogHost.card.remove();
+        dialogHost = null;
+      }
+    };
+    const showDeleteDialog = (sessionId, title) => {
+      closeDialog();
+      const frame = getFrame() ?? document.body;
+      const backdrop = document.createElement("div");
+      backdrop.dataset.mobileNav = "delete-dialog-backdrop";
+      const card = document.createElement("div");
+      card.dataset.mobileNav = "delete-dialog";
+      card.setAttribute("role", "dialog");
+      card.setAttribute("aria-modal", "true");
+      card.innerHTML = `
+        <div data-mobile-nav="delete-confirm-title">${escapeHtml(navT("deleteConfirmTitle"))}</div>
+        <div data-mobile-nav="delete-confirm-desc">${escapeHtml(navT("deleteConfirmDesc", { title }))}</div>
+        <div data-mobile-nav="delete-confirm-actions">
+          <button type="button" data-mobile-nav="delete-confirm-no">${escapeHtml(navT("deleteConfirmNo"))}</button>
+          <button type="button" data-mobile-nav="delete-confirm-yes">${escapeHtml(navT("deleteConfirmYes"))}</button>
+        </div>
+        <div data-mobile-nav="delete-error" role="alert" hidden></div>`;
+      const noButton = card.querySelector('[data-mobile-nav="delete-confirm-no"]');
+      const yesButton = card.querySelector('[data-mobile-nav="delete-confirm-yes"]');
+      const errorLine = card.querySelector('[data-mobile-nav="delete-error"]');
+      noButton?.addEventListener("click", closeDialog);
+      backdrop.addEventListener("click", closeDialog);
+      const onKey = (event) => {
+        if (event.key === "Escape") closeDialog();
+      };
+      document.addEventListener("keydown", onKey, true);
+      closeDialogOnKey = onKey;
+      const resetButtons = () => {
+        if (yesButton !== null) {
+          yesButton.disabled = false;
+          yesButton.textContent = navT("deleteConfirmYes");
+        }
+        if (noButton !== null) noButton.disabled = false;
+      };
+      const fail = (message) => {
+        if (errorLine !== null) {
+          errorLine.textContent = message;
+          errorLine.hidden = false;
+        }
+        resetButtons();
+      };
+      const mapError = (payload, reason) => {
+        const code = payload?.error?.code;
+        if (code === "session-not-found") return navT("deleteErrorNotFound");
+        if (code === "session-busy") return navT("deleteErrorBusy");
+        const message = payload?.error?.message ?? (reason instanceof Error ? reason.message : String(reason));
+        return navT("deleteErrorGeneric", { message });
+      };
+      yesButton?.addEventListener("click", async () => {
+        yesButton.disabled = true;
+        if (noButton !== null) noButton.disabled = true;
+        yesButton.textContent = navT("deletePending");
+        if (errorLine !== null) errorLine.hidden = true;
+        const wasCurrent = ctx.sessions.list.getSnapshot().current === sessionId;
+        try {
+          const response = await fetch("/api/mobile-nav.session.delete", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ sessionId })
+          });
+          const payload = await response.json().catch(() => null);
+          if (!response.ok || payload === null || payload.ok !== true) {
+            fail(mapError(payload, new Error(`HTTP ${response.status}`)));
+            return;
+          }
+        } catch (reason) {
+          fail(mapError(null, reason));
+          return;
+        }
+        closeDialog();
+        if (wasCurrent) ctx.sessions.clear();
+        const sessions = ctx.sessions;
+        await sessions.refresh?.();
+        if (wasCurrent) ctx.layout.toggleSidebar();
+      });
+      frame.appendChild(backdrop);
+      frame.appendChild(card);
+      dialogHost = { backdrop, card };
+    };
+    const showError = (message) => {
+      closeDialog();
+      const frame = getFrame() ?? document.body;
+      const backdrop = document.createElement("div");
+      backdrop.dataset.mobileNav = "delete-dialog-backdrop";
+      const card = document.createElement("div");
+      card.dataset.mobileNav = "delete-dialog";
+      card.setAttribute("role", "dialog");
+      card.setAttribute("aria-modal", "true");
+      card.innerHTML = `
+        <div data-mobile-nav="delete-confirm-title">${escapeHtml(navT("deleteSession"))}</div>
+        <div data-mobile-nav="delete-error" role="alert">${escapeHtml(message)}</div>
+        <div data-mobile-nav="delete-confirm-actions">
+          <button type="button" data-mobile-nav="delete-confirm-no">${escapeHtml(navT("deleteConfirmNo"))}</button>
+        </div>`;
+      card.querySelector('[data-mobile-nav="delete-confirm-no"]')?.addEventListener("click", closeDialog);
+      backdrop.addEventListener("click", closeDialog);
+      const onKey = (event) => {
+        if (event.key === "Escape") closeDialog();
+      };
+      document.addEventListener("keydown", onKey, true);
+      closeDialogOnKey = onKey;
+      frame.appendChild(backdrop);
+      frame.appendChild(card);
+      dialogHost = { backdrop, card };
+    };
+    const injectInto = (menu) => {
+      if (menu.querySelector(`[${DELETE_ITEM_MARKER}]`) !== null) return;
+      const template = menu.querySelector('[role="menuitem"]');
+      const wrap = template?.parentElement;
+      const viewport = menu.querySelector('[class*="_viewport"]');
+      if (template === null || wrap === null || wrap === void 0 || viewport === null) return;
+      const clone = wrap.cloneNode(true);
+      const button = clone.querySelector('[role="menuitem"]');
+      if (button === null) return;
+      const icon = button.querySelector('[class*="_itemIcon"]');
+      if (icon !== null) {
+        icon.innerHTML = TRASH_SVG;
+        icon.style.color = DANGER_COLOR;
+      }
+      const label = button.querySelector('[class*="_itemLabel"]');
+      if (label !== null) {
+        label.textContent = navT("deleteSession");
+        label.style.color = DANGER_COLOR;
+      }
+      button.setAttribute("data-mobile-nav", "session-delete");
+      button.addEventListener("click", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        const captured = anchor;
+        captured?.button.click();
+        try {
+          if (captured === null || captured === void 0) {
+            showError(navT("deleteErrorResolve"));
+            return;
+          }
+          const sessionId = resolveSessionId(captured.row, captured.title);
+          if (sessionId === void 0) {
+            showError(navT("deleteErrorResolve"));
+            return;
+          }
+          showDeleteDialog(sessionId, captured.title);
+        } catch (reason) {
+          console.error("[dsh-web-mobile] session delete failed:", reason);
+          showError(navT("deleteErrorGeneric", {
+            message: reason instanceof Error ? reason.message : String(reason)
+          }));
+        }
+      });
+      viewport.appendChild(clone);
+    };
+    const injectAll = () => {
+      for (const menu of document.querySelectorAll('[role="menu"]')) {
+        if (isSessionMenu(menu)) injectInto(menu);
+      }
+    };
+    const scheduleInject = () => {
+      if (injectRaf !== 0) return;
+      injectRaf = requestAnimationFrame(() => {
+        injectRaf = 0;
+        injectAll();
+      });
+    };
+    const onDocumentClick = (event) => {
+      const target = event.target;
+      if (target === null) return;
+      const row = target.closest('[class*="_sessionRow"]');
+      if (row === null) return;
+      const button = row.querySelector("button");
+      if (button === null) return;
+      const title = row.querySelector('[class*="_title"]')?.textContent?.trim() ?? "";
+      anchor = { button, row, title };
+      scheduleInject();
+    };
+    document.addEventListener("click", onDocumentClick, true);
+    const observer = new MutationObserver((records) => {
+      for (const record of records) {
+        if (record.type !== "childList") continue;
+        const target = record.target;
+        if (target === document.body) {
+          scheduleInject();
+          break;
+        }
+        if (target instanceof HTMLElement && (target.matches('[role="menu"]') || target.closest('[role="menu"]') !== null)) {
+          scheduleInject();
+          break;
+        }
+      }
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+    injectAll();
+    return () => {
+      document.removeEventListener("click", onDocumentClick, true);
+      observer.disconnect();
+      if (injectRaf !== 0) cancelAnimationFrame(injectRaf);
+      closeDialog();
+      anchor = null;
+    };
+  });
+}
+
 // client/mobile/upstream/effects/composer-keyboard-guard.ts
 var COMPOSER_CARD_SELECTOR = "[data-composer-card]";
 var COMPOSER_INPUT_SELECTOR = "[data-composer-input]";
@@ -3909,7 +4265,7 @@ function installDebugBadge(ctx) {
 }
 
 // client/mobile/upstream/i18n/locales.ts
-var NS2 = "mobileNav";
+var NS3 = "mobileNav";
 var zh = {
   "open": "\u6253\u5F00\u76EE\u5F55",
   "close": "\u6536\u8D77\u76EE\u5F55",
@@ -3917,7 +4273,17 @@ var zh = {
   "sessionLog": "\u5BFC\u51FA\u4F1A\u8BDD\u65E5\u5FD7",
   "files": "\u6587\u4EF6\u6D4F\u89C8",
   "previewFullscreen": "\u5168\u5C4F\u9884\u89C8",
-  "previewExitFullscreen": "\u9000\u51FA\u5168\u5C4F"
+  "previewExitFullscreen": "\u9000\u51FA\u5168\u5C4F",
+  "deleteSession": "\u5220\u9664\u4F1A\u8BDD",
+  "deleteConfirmTitle": "\u5220\u9664\u4F1A\u8BDD\uFF1F",
+  "deleteConfirmDesc": "\u5C06\u5220\u9664\u300C{title}\u300D\u7684\u5B8C\u6574\u4F1A\u8BDD\u8BB0\u5F55\uFF0C\u6B64\u64CD\u4F5C\u4E0D\u53EF\u6062\u590D\u3002",
+  "deleteConfirmYes": "\u5220\u9664",
+  "deleteConfirmNo": "\u53D6\u6D88",
+  "deletePending": "\u6B63\u5728\u5220\u9664\u2026",
+  "deleteErrorBusy": "\u8BE5\u4F1A\u8BDD\u6B63\u5728\u8FD0\u884C\u4E14\u65E0\u6CD5\u505C\u6B62\uFF0C\u8BF7\u7A0D\u540E\u91CD\u8BD5\u3002",
+  "deleteErrorNotFound": "\u4F1A\u8BDD\u4E0D\u5B58\u5728\u6216\u5DF2\u88AB\u5220\u9664\u3002",
+  "deleteErrorResolve": "\u65E0\u6CD5\u786E\u5B9A\u8981\u5220\u9664\u7684\u4F1A\u8BDD\uFF0C\u8BF7\u91CD\u8BD5\u3002",
+  "deleteErrorGeneric": "\u5220\u9664\u5931\u8D25\uFF1A{message}"
 };
 var en = {
   "open": "Open directory",
@@ -3926,12 +4292,22 @@ var en = {
   "sessionLog": "Session log",
   "files": "Files",
   "previewFullscreen": "Fullscreen preview",
-  "previewExitFullscreen": "Exit fullscreen"
+  "previewExitFullscreen": "Exit fullscreen",
+  "deleteSession": "Delete session",
+  "deleteConfirmTitle": "Delete session?",
+  "deleteConfirmDesc": "The complete log of \u201C{title}\u201D will be permanently removed. This cannot be undone.",
+  "deleteConfirmYes": "Delete",
+  "deleteConfirmNo": "Cancel",
+  "deletePending": "Deleting\u2026",
+  "deleteErrorBusy": "This session is running and could not be stopped. Try again later.",
+  "deleteErrorNotFound": "The session does not exist or was already deleted.",
+  "deleteErrorResolve": "Could not identify the session to delete. Please try again.",
+  "deleteErrorGeneric": "Delete failed: {message}"
 };
 
 // client/mobile/upstream/index.tsx
 function apply(ctx) {
-  ctx.effect(() => ctx.locale.register(NS2, { zh, en }), "dsh-web-mobile: dictionaries");
+  ctx.effect(() => ctx.locale.register(NS3, { zh, en }), "dsh-web-mobile: dictionaries");
   ctx.effect(() => {
     const tag = document.createElement("style");
     tag.dataset.plugin = "dsh-web-mobile";
@@ -4043,6 +4419,7 @@ function apply(ctx) {
     };
   }, "dsh-web-mobile: reconciler infrastructure");
   installOverlayInteractions(ctx);
+  installSessionMenuDelete(ctx);
   installSidebarSwipe(ctx);
   installSubagentChipTouch(ctx);
   installComposerKeyboardGuard(ctx);
@@ -4053,7 +4430,7 @@ function apply(ctx) {
     name: "conversation.session.header.actions",
     id: "mobile-nav-toggle",
     order: 10,
-    locale: NS2,
+    locale: NS3,
     inject: () => ({
       toggleSidebar: () => ctx.layout.toggleSidebar()
     })
@@ -4062,7 +4439,7 @@ function apply(ctx) {
     name: "sidebar.footer.action",
     id: "mobile-nav-session-log",
     order: 5,
-    locale: NS2,
+    locale: NS3,
     inject: () => ({
       // The component's internal id is a plain string (slot runtime typing);
       // the host-generation brand boundary lives here and only here, hence
@@ -4389,7 +4766,7 @@ function mobileApply(ctx) {
 }
 
 // client/pocket-locales.js
-var NS3 = "pocket";
+var NS4 = "pocket";
 var zh2 = {
   "section": "\u624B\u673A\u8BBF\u95EE",
   "title": "\u{1F4F1} \u624B\u673A\u8BBF\u95EE",
@@ -5249,8 +5626,8 @@ function apply2(ctx) {
   }
   mobileApply(ctx);
   const rpcCall = (endpoint, payload, signal) => ctx.connection.rpc.call(POCKET_RPC_CHANNEL, endpoint, payload, signal);
-  const translate = ctx.locale.bind(NS3);
-  ctx.effect(() => ctx.locale.register(NS3, { zh: zh2, en: en2 }), "dsh-pocket: pocket locale dictionaries");
+  const translate = ctx.locale.bind(NS4);
+  ctx.effect(() => ctx.locale.register(NS4, { zh: zh2, en: en2 }), "dsh-pocket: pocket locale dictionaries");
   ctx.slots.inject(
     "settings.section",
     () => ctx.slots.register(

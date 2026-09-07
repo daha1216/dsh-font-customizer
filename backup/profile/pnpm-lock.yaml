@@ -12,8 +12,8 @@ importers:
         specifier: 0.1.4
         version: 0.1.4
       '@michengai/dsh-archive-manager':
-        specifier: ^0.1.30
-        version: 0.1.30(@deepseek-ai/dsh-typert-protocol@0.1.0-rc.6)
+        specifier: ^0.1.32
+        version: 0.1.32(@deepseek-ai/dsh-typert-protocol@0.1.0-rc.6)
       '@tt-a1i/archify-dsh':
         specifier: 0.1.0
         version: 0.1.0
@@ -27,8 +27,8 @@ importers:
         specifier: github:ParticleLight/dsh-all-usage#d0b2b7352263fb14663a2f262d12ea0998200ff2
         version: https://codeload.github.com/ParticleLight/dsh-all-usage/tar.gz/d0b2b7352263fb14663a2f262d12ea0998200ff2
       dsh-better-reasoning-effort:
-        specifier: github:HaoyueQin/dsh-better-reasoning-effort#92fee8ee994a7e4203badd327fefe24e3219e62f
-        version: https://codeload.github.com/HaoyueQin/dsh-better-reasoning-effort/tar.gz/92fee8ee994a7e4203badd327fefe24e3219e62f(@deepseek-ai/schemastery@3.18.1)
+        specifier: github:HaoyueQin/dsh-better-reasoning-effort
+        version: https://codeload.github.com/HaoyueQin/dsh-better-reasoning-effort/tar.gz/281ae921702208ed576ff9d77ddb540f45e71bff(@deepseek-ai/schemastery@3.18.1)
       dsh-better-sidebar:
         specifier: 0.18.0
         version: 0.18.0
@@ -51,8 +51,8 @@ importers:
         specifier: github:CocoSgt/dsh-skills
         version: https://codeload.github.com/CocoSgt/dsh-skills/tar.gz/e1eff623f3bd3e6c26a24d49a9ac953e28778cc9
       dshmarket:
-        specifier: 1.44.0
-        version: 1.44.0(@deepseek-ai/schemastery@3.18.1)
+        specifier: 1.45.0
+        version: 1.45.0(@deepseek-ai/schemastery@3.18.1)
 
 packages:
 
@@ -237,8 +237,8 @@ packages:
   '@mermaid-js/parser@1.2.0':
     resolution: {integrity: sha512-oYPyv8A4As1yH5Bx+04iQEQxXuIQDe0GKCNSRgao6z8AM9jixXIfP0vsppRLvGf+nKIOb9/LdpWA4YuJiVvESA==}
 
-  '@michengai/dsh-archive-manager@0.1.30':
-    resolution: {integrity: sha512-UZx//3MBdoCVyV7sJZkeuFGGJMaoAobBFzZKQFSGqhNcMs+6Ct0OG8r8j0P9EItmayMjmrd1dKid+JTaorJEhQ==}
+  '@michengai/dsh-archive-manager@0.1.32':
+    resolution: {integrity: sha512-0Xd8JPI8Mjl5TPG5Rat/w7JIfQ1LJ6pDKi31elasA5vzZ7MxBUlZ4ZcQFbjQyU7S7PNMDw9Bshj7kT5sSOHAZg==}
     engines: {node: ^22.19.0 || >=24.0.0}
     peerDependencies:
       '@deepseek-ai/cordis': ^4.0.1
@@ -250,6 +250,7 @@ packages:
       '@deepseek-ai/dsh-client-ui-primitives': '>=0.1.0-rc.5 <0.2.0'
       '@deepseek-ai/dsh-client-ui-sidebar': '>=0.1.0-rc.5 <0.2.0'
       '@deepseek-ai/dsh-client-ui-workspace': '>=0.1.0-rc.5 <0.2.0'
+      '@deepseek-ai/dsh-host-webserver': '>=0.1.0-rc.5 <0.2.0'
       '@deepseek-ai/dsh-session': '>=0.1.0-rc.5 <0.2.0'
       '@deepseek-ai/dsh-session-projection-cache': '>=0.1.0-rc.5 <0.2.0'
       '@deepseek-ai/dsh-spill-local': '>=0.1.0-rc.5 <0.2.0'
@@ -632,8 +633,8 @@ packages:
     version: 1.1.5
     engines: {node: '>=22 <25'}
 
-  dsh-better-reasoning-effort@https://codeload.github.com/HaoyueQin/dsh-better-reasoning-effort/tar.gz/92fee8ee994a7e4203badd327fefe24e3219e62f:
-    resolution: {gitHosted: true, integrity: sha512-b0J6T8MMVrLj5zqD6boh1lAgW0b22ui8NBhoL7hPPpPokBbPyEt0lbAd2orbmLhJLhyuM9SWll/3zT2fNlOpbA==, tarball: https://codeload.github.com/HaoyueQin/dsh-better-reasoning-effort/tar.gz/92fee8ee994a7e4203badd327fefe24e3219e62f}
+  dsh-better-reasoning-effort@https://codeload.github.com/HaoyueQin/dsh-better-reasoning-effort/tar.gz/281ae921702208ed576ff9d77ddb540f45e71bff:
+    resolution: {gitHosted: true, integrity: sha512-+/fCmsUMfox/6HDOzuD1D7o9bned7fEnKTwHh+QR48C3Zj9IVAE6TGord/7CDdk6qo3FVtebvRsb+wxyNIb5Dg==, tarball: https://codeload.github.com/HaoyueQin/dsh-better-reasoning-effort/tar.gz/281ae921702208ed576ff9d77ddb540f45e71bff}
     version: 0.3.6
     engines: {node: ^20.0.0 || ^22.0.0 || >=24}
     peerDependencies:
@@ -715,8 +716,8 @@ packages:
     resolution: {gitHosted: true, tarball: https://codeload.github.com/CocoSgt/dsh-skills/tar.gz/e1eff623f3bd3e6c26a24d49a9ac953e28778cc9}
     version: 0.1.1
 
-  dshmarket@1.44.0:
-    resolution: {integrity: sha512-MNWOVxrBarj1cY9VcrEx1joltnnp/xZHTRqZsM8vJhVe58m6wBG6zEa7/RncsAmwnXkR1499paxwtYi1BAC1sw==}
+  dshmarket@1.45.0:
+    resolution: {integrity: sha512-HuOU/eEnNCuX3Q44qkFjjW1yDiE+hmXv32JjNylFyPSq2SSB/OCxFuE9yvnoMv9tB3Cd8chtBlKYrvP9xr1nYQ==}
     peerDependencies:
       '@deepseek-ai/cordis': ^4.0.1
       '@deepseek-ai/dsh-settings': ^0.1.0-rc.7 || ^0.1.1-rc.2 || ^0.1.2-alpha.2
@@ -1290,7 +1291,7 @@ snapshots:
     dependencies:
       '@chevrotain/types': 11.1.2
 
-  '@michengai/dsh-archive-manager@0.1.30(@deepseek-ai/dsh-typert-protocol@0.1.0-rc.6)':
+  '@michengai/dsh-archive-manager@0.1.32(@deepseek-ai/dsh-typert-protocol@0.1.0-rc.6)':
     dependencies:
       '@deepseek-ai/dsh-typert-protocol': 0.1.0-rc.6(@deepseek-ai/cordis@4.0.1)
 
@@ -1677,7 +1678,7 @@ snapshots:
 
   dsh-all-usage@https://codeload.github.com/ParticleLight/dsh-all-usage/tar.gz/d0b2b7352263fb14663a2f262d12ea0998200ff2: {}
 
-  dsh-better-reasoning-effort@https://codeload.github.com/HaoyueQin/dsh-better-reasoning-effort/tar.gz/92fee8ee994a7e4203badd327fefe24e3219e62f(@deepseek-ai/schemastery@3.18.1):
+  dsh-better-reasoning-effort@https://codeload.github.com/HaoyueQin/dsh-better-reasoning-effort/tar.gz/281ae921702208ed576ff9d77ddb540f45e71bff(@deepseek-ai/schemastery@3.18.1):
     dependencies:
       '@deepseek-ai/schemastery': 3.18.1
 
@@ -1746,7 +1747,7 @@ snapshots:
       - '@deepseek-ai/cordis-plugin-loader'
       - '@deepseek-ai/dsh-invariants'
 
-  dshmarket@1.44.0(@deepseek-ai/schemastery@3.18.1):
+  dshmarket@1.45.0(@deepseek-ai/schemastery@3.18.1):
     dependencies:
       js-yaml: 4.3.1
       undici: 7.29.0

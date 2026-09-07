@@ -3,14 +3,14 @@
 本目录是 **dsh-pocket 插件「安装态 + 本地补丁」** 的快照。上游插件通过 pnpm 安装在
 `~/.dsh/profiles/web/node_modules/dsh-pocket`（v2.10.3，锁定 `github:shaobeichen/dsh-pocket` tarball eb25503），
 本地在其上打了手机端兼容补丁。**任何 pnpm 重装（包括市场自动更新其他插件引发的 relink）
-都会把 node_modules 恢复成上游原样、清掉本地补丁** —— 2026-09-07 已发生两次（20:00 / 23:04）。
-本备份用于 wipe 后一键恢复。
+都会把 node_modules 恢复成上游原样、清掉本地补丁** —— 已发生三次（07 日 20:00 / 23:04、
+08 日 02:23）。第三次已用本文路径 A + 重启在几分钟内恢复，流程可用。
 
 ## 内容
 
 | 路径 | 说明 |
 | --- | --- |
-| `plugins/dsh-pocket/` | 打完补丁的完整插件目录（48 文件，805 KB），含 `lib/proxy.mjs`（401 自愈、手机诊断脚本注入、preservedQuery / handshake 刷新、forceLoopback）、`client/mobile/mobile-apply.tsx`（适配器）、`client/mobile/upstream/`（上游 dsh-web-mobile v2.3.0 ac7a588 镜像 24 文件）、`client/mobile/client.js`（已构建 bundle）、`PORTING.md` |
+| `plugins/dsh-pocket/` | 打完补丁的完整插件目录（49 文件，845 KB），含 `lib/proxy.mjs`（401 自愈、手机诊断脚本注入、preservedQuery / handshake 刷新、forceLoopback）、`client/mobile/mobile-apply.tsx`（适配器）、`client/mobile/upstream/`（上游 dsh-web-mobile v2.3.0 镜像 25 文件）、`client/client.js`（已构建 bundle，移植层已打包在内；校验标记用 `POCKET_EXTRA_CSS` / `fileGuard`，`upstreamApply` 是标识符会被 esbuild 改名、在 bundle 里查不到）、`PORTING.md` |
 | `patches/` | 24 个补丁步骤 JSON（seq-454 → seq-2563，从会话转录 `session.v2.jsonl.zstd` 恢复的 write/edit 原文），供 `replay-patches.mjs` 重放 |
 | `tools/dsh-pocket/` | 6 个维护脚本：`apply-rc1-mobile-compat.ps1`（rc.1 loopback 补丁）、`sync-dsh-web-mobile.mjs`（upstream 镜像 + esbuild 重建）、`detached-restart.cjs`（25s 熔断重启）、`apply-pin-patch.ps1`、`patch-native-tostring.mjs`、`ssl-recovery-watch.mjs` |
 | `tools/restore/` | 补丁重放工具链：`replay-patches.mjs`、`dump-zstd.mjs`（多帧 zstd 转录解压）、`extract-patches.mjs` |
@@ -30,8 +30,8 @@ Copy-Item backup\plugins\dsh-pocket\* $dst -Recurse -Force
 ```
 
 注意：用合并拷贝（Copy-Item），**不要** robocopy `/MIR` —— 会把 dest 里的嵌套
-`node_modules` junction 删掉。bundle（`client/mobile/client.js`）已在备份里，无需重建。
-拷完重启 dsh web（见下）。
+`node_modules` junction 删掉。构建产物 bundle 在备份里（`client/client.js`），无需重建；
+若想按最新上游重建，跑一次 `sync-dsh-web-mobile.mjs` 即可。拷完重启 dsh web（见下）。
 
 ### 路径 B：重放补丁（上游版本变了 / 想逐步走）
 

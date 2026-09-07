@@ -3,12 +3,12 @@
   "private": true,
   "dependencies": {
     "@anysearch/anysearch-dsh": "0.1.4",
-    "@michengai/dsh-archive-manager": "^0.1.30",
+    "@michengai/dsh-archive-manager": "^0.1.32",
     "@tt-a1i/archify-dsh": "0.1.0",
     "@xueayi/dsh-opencode-go-usage": "github:xueayi/dsh-opencode-go-usage",
     "billion-context-dsh": "^0.2.21",
     "dsh-all-usage": "github:ParticleLight/dsh-all-usage#d0b2b7352263fb14663a2f262d12ea0998200ff2",
-    "dsh-better-reasoning-effort": "github:HaoyueQin/dsh-better-reasoning-effort#92fee8ee994a7e4203badd327fefe24e3219e62f",
+    "dsh-better-reasoning-effort": "github:HaoyueQin/dsh-better-reasoning-effort",
     "dsh-better-sidebar": "0.18.0",
     "dsh-font-customizer": "link:I:/glm工作区/dsh-font-customizer",
     "dsh-pet": "0.2.6",
@@ -16,7 +16,7 @@
     "dsh-pocket": "github:shaobeichen/dsh-pocket",
     "dsh-recall-plugin": "^2.3.6",
     "dsh-skills": "github:CocoSgt/dsh-skills",
-    "dshmarket": "1.44.0"
+    "dshmarket": "1.45.0"
   },
   "dsh": {
     "profile": {

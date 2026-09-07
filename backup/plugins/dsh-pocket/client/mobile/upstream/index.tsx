@@ -6,6 +6,7 @@ import { MOBILE_CSS } from './styles/index.ts'
 import { installFrameController, installOverlayInteractions, installPhoneChrome, installReconciler, registerReconcileTasks, MOBILE_QUERY } from './effects/phone-chrome.ts'
 import { installSidebarSwipe } from './effects/sidebar-swipe.ts'
 import { installSubagentChipTouch } from './effects/subagent-chip-touch.ts'
+import { installSessionMenuDelete } from './effects/session-menu.ts'
 import { installComposerKeyboardGuard } from './effects/composer-keyboard-guard.ts'
 import { installAionuiCompat } from './effects/aionui-compat.ts'
 import { createRafScheduler } from './core/raf-scheduler.ts'
@@ -21,7 +22,7 @@ declare module '@deepseek-ai/dsh-client-ui-slots' {
 }
 
 /** Required services (cordis fiber inject — the loader passes all module exports as an object plugin). */
-export const inject = ['slots', 'layout', 'locale', 'sessionLogDownload']
+export const inject = ['slots', 'layout', 'locale', 'sessionLogDownload', 'sessions', 'workspaces']
 
 /**
  * Session-id shape the installed host's sessionLogDownload.download expects.
@@ -175,6 +176,10 @@ export function apply(ctx: ClientContext): void {
 
   // Drawer close interactions: Escape and navigation taps inside the drawer.
   installOverlayInteractions(ctx)
+
+  // Session deletion, injected into each session row's ⋯ menu (beside
+  // rename / fork / archive) with a confirm dialog. Mobile-only.
+  installSessionMenuDelete(ctx)
 
   // Sidebar swipe gestures: edge swipe-in opens the drawer, content swipe-out
   // closes it (release-classified, zero inline transforms — A 档).

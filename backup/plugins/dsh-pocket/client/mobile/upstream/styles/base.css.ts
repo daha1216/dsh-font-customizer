@@ -64,6 +64,99 @@ export const BASE_CSS = `
   cursor: default;
 }
 
+/* Session-delete confirm / error cards (shown as a bottom overlay, see the
+   delete-dialog wrapper below). Danger-tinted card with a description and
+   two actions. */
+[data-mobile-nav="delete-confirm"] {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px 10px;
+  border: 1px solid var(--dsw-alias-state-error-secondary, rgba(220, 38, 38, .35));
+  border-radius: 12px;
+  background: var(--dsw-alias-interactive-bg-hover-danger, rgba(220, 38, 38, .06));
+}
+[data-mobile-nav="delete-confirm-title"] {
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 18px;
+  color: var(--dsw-alias-state-error-primary, #b91c1c);
+}
+[data-mobile-nav="delete-confirm-desc"] {
+  font-size: 12px;
+  line-height: 17px;
+  color: var(--dsw-alias-label-secondary, inherit);
+}
+[data-mobile-nav="delete-confirm-actions"] {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 2px;
+}
+[data-mobile-nav="delete-confirm-actions"] > button {
+  height: 30px;
+  padding: 0 12px;
+  border: 1px solid var(--dsw-alias-border-l1, rgba(0, 0, 0, .12));
+  border-radius: 10px;
+  background: transparent;
+  color: var(--dsw-alias-label-primary, inherit);
+  font-family: inherit;
+  font-size: 13px;
+  line-height: 20px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+[data-mobile-nav="delete-confirm-yes"] {
+  border-color: var(--dsw-alias-state-error-secondary, rgba(220, 38, 38, .5)) !important;
+  background: var(--dsw-alias-state-error-primary, #dc2626) !important;
+  color: #ffffff !important;
+}
+[data-mobile-nav="delete-confirm-actions"] > button:disabled {
+  opacity: .55;
+  cursor: default;
+}
+[data-mobile-nav="delete-error"] {
+  width: 100%;
+  font-size: 12px;
+  line-height: 17px;
+  color: var(--dsw-alias-state-error-primary, #b91c1c);
+}
+
+/* Bottom overlay for the delete confirm / error card: dimmed backdrop plus a
+   viewport-anchored card above the drawer. [hidden] keeps the error line out
+   of layout until a failure lands. */
+[data-mobile-nav="delete-dialog-backdrop"] {
+  position: fixed;
+  inset: 0;
+  z-index: 55;
+  background: rgba(0, 0, 0, .45);
+  animation: dsh-web-mobile-fade .2s var(--ds-ease-in-out, ease-in-out);
+}
+[data-mobile-nav="delete-dialog"] {
+  position: fixed;
+  left: 8px;
+  right: 8px;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 16px);
+  z-index: 56;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  border-radius: 14px;
+  background: var(--dsw-alias-bg-base, #ffffff);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, .22);
+  animation: dsh-web-mobile-sheet-in .22s var(--ds-ease-out, ease-in-out);
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-mobile-nav="delete-dialog-backdrop"],
+  [data-mobile-nav="delete-dialog"] {
+    animation: none !important;
+  }
+}
+
 /* Floating fallback button (hero / blank phases without a session header).
    The top clears the camera band below the status bar; when the client has
    set viewport-fit=cover the safe-area inset moves it below the notch too. */
