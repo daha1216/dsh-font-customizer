@@ -1,0 +1,10 @@
+{
+ "seq": 459,
+ "time": "2026-09-05T05:33:01.165Z",
+ "tool": "edit",
+ "args": {
+  "file_path": "C:\\Users\\daha\\.dsh\\profiles\\web\\node_modules\\dsh-pocket\\lib\\proxy.mjs",
+  "new_string": "          z.on('error', () => res.destroy());\n          return;\n        }\n        // 401 自愈（2026-09-05）：浏览器持有「有效 pocket cookie + 失效 dsh-auth-* cookie」\n        // 时，门禁放行、上游拒绝 → 裸 401 且无任何恢复路径（正常密码页被 pocket cookie 短路）。\n        // 对 HTML 导航请求重定向到强制握手参数，重新签发 dsh-auth；循环由既有 handshake\n        // tracker（60s 内 3 次上限）与「已带参数则不再重定向」双保险兜底。\n        if (proxyRes.statusCode === 401 && !res.headersSent\n          && (req.method === 'GET' || req.method === 'HEAD')\n          && isHtmlRequest(req)\n          && String(req.headers.cookie ?? '').includes('dsh-auth-')\n          && !String(req.url ?? '').includes('dsh-pocket-auth')) {\n          const target = String(req.url || '/') + (String(req.url).includes('?') ? '&' : '?') + 'dsh-pocket-auth=1';\n          log?.(`401 self-heal: stale dsh-auth cookie on ${String(req.url).slice(0, 80)} -> redirect ${target.slice(0, 90)}`);\n          res.writeHead(302, { location: target, 'cache-control': 'no-store' });\n          res.end();\n          proxyRes.destroy();\n          return;\n        }\n        res.writeHead(proxyRes.statusCode ?? 502, proxyRes.headers);\n        proxyRes.pipe(res);",
+  "old_string": "          z.on('error', () => res.destroy());\n          return;\n        }\n        res.writeHead(proxyRes.statusCode ?? 502, proxyRes.headers);\n        proxyRes.pipe(res);"
+ }
+}

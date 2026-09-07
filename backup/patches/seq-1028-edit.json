@@ -1,0 +1,10 @@
+{
+ "seq": 1028,
+ "time": "2026-09-05T07:16:54.987Z",
+ "tool": "edit",
+ "args": {
+  "file_path": "C:\\Users\\daha\\.dsh\\profiles\\web\\node_modules\\dsh-pocket\\lib\\proxy.mjs",
+  "new_string": "import { createServer } from 'node:http';\nimport { request as httpRequest } from 'node:http';\nimport { createGzip, createBrotliCompress, constants as zlibConstants } from 'node:zlib';\nimport { createHash, timingSafeEqual } from 'node:crypto';\nimport { appendFileSync, existsSync, statSync } from 'node:fs';\nimport { homedir } from 'node:os';\nimport { join } from 'node:path';",
+  "old_string": "import { createServer } from 'node:http';\nimport { request as httpRequest } from 'node:http';\nimport { createGzip, createBrotliCompress, constants as zlibConstants } from 'node:zlib';\nimport { createHash, timingSafeEqual } from 'node:crypto';"
+ }
+}

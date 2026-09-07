@@ -1,0 +1,10 @@
+{
+ "seq": 454,
+ "time": "2026-09-05T05:32:49.020Z",
+ "tool": "edit",
+ "args": {
+  "file_path": "C:\\Users\\daha\\.dsh\\profiles\\web\\node_modules\\dsh-pocket\\lib\\proxy.mjs",
+  "new_string": "/** 默认注入到经代理的 HTML 文档里：仅保留 polyfill。\n * LOOPBACK_ENV_PATCH 已停用（2026-09-05）：新版 DSH 前端 bundle（rev=28e1db08b1d0）下，\n * 该补丁对 __ModuleLoader__/facade.load 的劫持会使 connection 服务不可用，应用卡在\n * Loading plugins、会话内容不显示（无头 Chromium 经隧道实测复现，剥离该补丁即恢复）。\n * 且新版前端 bundle 与 client-modules 中 isLoopback 出现 0 次——issue #58 场景已不存在。\n * 如 dsh 前端重新出现 loopback 判定问题，把 LOOPBACK_ENV_PATCH 加回拼接即可。 */\nexport const DEFAULT_INJECT = RANDOM_UUID_POLYFILL;",
+  "old_string": "/** 默认注入到经代理的 HTML 文档里：polyfill + loopback 信任环境补丁（issue #58）。 */\nexport const DEFAULT_INJECT = RANDOM_UUID_POLYFILL + LOOPBACK_ENV_PATCH;"
+ }
+}

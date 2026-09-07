@@ -1,0 +1,10 @@
+{
+ "seq": 2397,
+ "time": "2026-09-05T17:37:58.416Z",
+ "tool": "edit",
+ "args": {
+  "file_path": "C:\\Users\\daha\\.dsh\\profiles\\web\\node_modules\\dsh-pocket\\lib\\proxy.mjs",
+  "new_string": "<form method=\"post\" action=\"/pocket-login${returnQuery}\">",
+  "old_string": "<form method=\"post\" action=\"/pocket-login\">"
+ }
+}

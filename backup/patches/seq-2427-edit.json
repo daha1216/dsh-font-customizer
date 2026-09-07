@@ -1,0 +1,10 @@
+{
+ "seq": 2427,
+ "time": "2026-09-05T17:38:25.515Z",
+ "tool": "edit",
+ "args": {
+  "file_path": "C:\\Users\\daha\\.dsh\\profiles\\web\\node_modules\\dsh-pocket\\lib\\proxy.mjs",
+  "new_string": "            // 锁定期间打开登录页也给提示（HTTP 200 + 锁定文案；429 语义留给 POST 拒绝）\n            const rl = limiter?.status(ip) ?? { locked: false, retryAfter: 0 };\n            res.writeHead(200, { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'no-store' });\n            res.end(loginPageHtml(rl.locked ? 'locked' : false, isPublic, rl.retryAfter, preservedQuery(req.url)));",
+  "old_string": "            // 锁定期间打开登录页也给提示（HTTP 200 + 锁定文案；429 语义留给 POST 拒绝）\n            const rl = limiter?.status(ip) ?? { locked: false, retryAfter: 0 };\n            res.writeHead(200, { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'no-store' });\n            res.end(loginPageHtml(rl.locked ? 'locked' : false, isPublic, rl.retryAfter));"
+ }
+}

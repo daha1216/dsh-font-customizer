@@ -1,0 +1,27 @@
+{
+  "time": "2026-09-07T17:03:40.311Z",
+  "source": "C:\\Users\\daha\\.dsh\\profiles\\web",
+  "only": "dsh-pocket",
+  "packages": {
+    "dsh-pocket": {
+      "version": "2.10.3",
+      "spec": "github:shaobeichen/dsh-pocket",
+      "files": 48,
+      "bytes": 823867
+    }
+  },
+  "patched": {
+    "dsh-pocket": {
+      "lib/proxy.mjs": {
+        "PHONE_DIAG_SCRIPT": true,
+        "preservedQuery": true,
+        "DEFAULT_INJECT_WITH_DIAG": true,
+        "forceLoopback": true,
+        "RANDOM_UUID_POLYFILL": true
+      },
+      "client/mobile/mobile-apply.tsx": {
+        "upstreamApply": true
+      }
+    }
+  }
+}

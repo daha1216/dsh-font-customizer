@@ -48,6 +48,12 @@ dsh plugin --profile web remove dsh-font-customizer
 - **自定义**选择后输入 CSS 字体栈，如 `'LXGW WenKai', sans-serif`；界面字体栈尾建议 `sans-serif`，代码字体栈尾建议 `monospace`
 - 字号选「默认（跟随 DSH 内置）」时完全交还内置字号设置管理
 
+### 备份
+
+`backup/` 内是 **dsh-pocket 插件安装态 + 本地补丁** 的快照（手机端兼容修复等）。pnpm 重装
+（如市场自动更新其他插件）会清掉 node_modules 里的本地补丁，此时按
+[backup/RESTORE.md](backup/RESTORE.md) 的步骤一键恢复。
+
 ### 工作原理
 
 | 半侧 | 文件 | 职责 |

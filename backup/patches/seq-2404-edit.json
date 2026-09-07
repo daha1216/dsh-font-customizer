@@ -1,0 +1,10 @@
+{
+ "seq": 2404,
+ "time": "2026-09-05T17:38:07.663Z",
+ "tool": "edit",
+ "args": {
+  "file_path": "C:\\Users\\daha\\.dsh\\profiles\\web\\node_modules\\dsh-pocket\\lib\\proxy.mjs",
+  "new_string": "/** 握手过渡页：200 + Set-Cookie（由调用方带上）+ meta refresh 跳回干净根路径（保留 dsh-layout 等业务参数）。 */\nexport function handshakePageHtml(target = '/') {\n  const safe = typeof target === 'string' && target.startsWith('/') && !target.startsWith('//') && !target.includes('\\\\') ? target : '/';\n  return `<!doctype html><html lang=\"zh\"><head><meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">\n<meta http-equiv=\"refresh\" content=\"0; url=${safe}\">",
+  "old_string": "/** 握手过渡页：200 + Set-Cookie（由调用方带上）+ meta refresh 跳回干净根路径。 */\nexport function handshakePageHtml() {\n  return `<!doctype html><html lang=\"zh\"><head><meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">\n<meta http-equiv=\"refresh\" content=\"0; url=/\">"
+ }
+}

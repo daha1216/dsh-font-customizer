@@ -1,0 +1,10 @@
+{
+ "seq": 2563,
+ "time": "2026-09-05T17:47:16.050Z",
+ "tool": "edit",
+ "args": {
+  "file_path": "C:\\Users\\daha\\.dsh\\profiles\\web\\node_modules\\dsh-pocket\\client\\mobile\\mobile-apply.tsx",
+  "new_string": "  const urlRaw = new URL(window.location.href).searchParams.get('dsh-layout')\n  const urlValue = urlRaw ?? ''\n  const narrowMQ = window.matchMedia('(max-width: 1023px)');\n  // 传原始值（含 null=URL 无此参数）：persistLayoutFromUrl 需要区分「无参数」\n  // （不动 localStorage，issue #74 的持久化承诺）与「显式 dsh-layout=auto」（清除）。\n  const stored = persistLayoutFromUrl(urlRaw);",
+  "old_string": "  const urlValue = new URL(window.location.href).searchParams.get('dsh-layout') ?? ''\n  const narrowMQ = window.matchMedia('(max-width: 1023px)');\n  const stored = persistLayoutFromUrl(urlValue);"
+ }
+}

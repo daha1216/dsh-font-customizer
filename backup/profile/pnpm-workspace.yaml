@@ -1,0 +1,118 @@
+packages:
+  - .
+
+nodeLinker: hoisted
+autoInstallPeers: false
+fetchTimeout: 900000
+fetchRetries: 5
+
+allowBuilds:
+  cloudflared: true
+  cpu-features: true
+  node-pty: true
+  protobufjs: true
+  ssh2: true
+  dsh-better-sidebar@https://codeload.github.com/omdsh-dev/DSH-better-sidebar/tar.gz/5d2d6e580143dc6ad95c015feb2909ec60afdf77: true
+  dsh-better-sidebar: true
+  dsh-better-sidebar@git+https://github.com/omdsh-dev/DSH-better-sidebar.git: true
+  dsh-recall-plugin: true
+  '@xueayi/dsh-opencode-go-usage': true
+  '@omdsh-dev/dsh-drag-and-drop': true
+  '@dsh-external/dsh-super-injector': true
+  '@huanlin/dsh-plugin-merge-tool-calls': true
+  dsh-at-file: true
+  dsh-context: true
+  dsh-pet: true
+  dsh-pocket: true
+  dsh-client-auto-continue: true
+  dsh-skills: true
+  dsh-usage-stats: true
+  dsh-notification: true
+  dshmarket: true
+  dshmarket@https://codeload.github.com/dsh-market/dsh-market/tar.gz/b9323cc85d0148013384a5aca5215be1922eea36: true
+  dshmarket@https://codeload.github.com/dsh-market/dsh-market/tar.gz/eca19a156c9fb7ee8982ebe295f9f1a3647e1843: true
+  dshmarket@https://codeload.github.com/dsh-market/dsh-market/tar.gz/38077ca6c8d5f936ee3a0d44f9ac92409aa82c27: true
+  dshmarket@https://codeload.github.com/dsh-market/dsh-market/tar.gz/41c7b3a18ab397b550a3c7355dc34d1dbe69689d: true
+  dshmarket@https://codeload.github.com/dsh-market/dsh-market/tar.gz/f2172056fd25f4665de9b44a1983a7297f6de927: true
+  dsh-better-reasoning-effort@https://codeload.github.com/HaoyueQin/dsh-better-reasoning-effort/tar.gz/bf3e7d88e99ecee8ffaa7f0441ba3ed8e0007c21: true
+  dsh-better-reasoning-effort@https://codeload.github.com/HaoyueQin/dsh-better-reasoning-effort/tar.gz/6ae8ce2cdbe5fae5891b2284b66288f9a8928a32: true
+  dsh-better-reasoning-effort@https://codeload.github.com/HaoyueQin/dsh-better-reasoning-effort/tar.gz/9c8b3b4a1340b74b914049ae3556702199feb310: true
+  '@liustack/modlens': true
+  '@huanlin/dsh-plugin-merge-tool-calls@https://codeload.github.com/HuanLinOTO/dsh-plugin-merge-tool-calls/tar.gz/33495a1049320d5a794b6356d435a62675f88231': true
+  '@omdsh-dev/dsh-drag-and-drop@https://codeload.github.com/omdsh-dev/dsh-drag-and-drop/tar.gz/09088d6890866eda57adee6864cd2fbf8281f679': true
+  dsh-at-file@https://codeload.github.com/omdsh-dev/dsh-at-file/tar.gz/898369ece56ae6ec41afd8e014f187bb5b723409: true
+  dsh-client-auto-continue@https://codeload.github.com/HsiangNianian/dsh-auto-continue/tar.gz/89e4eafd2dd55dc89175f102e942f8e71d9ef821: true
+  dsh-context@https://codeload.github.com/bowenliang123/dsh-context/tar.gz/3cf7a94c902c819c3cb8c9aa811de0f08d22e1bb: true
+  dsh-notification@https://codeload.github.com/omdsh-dev/dsh-notification/tar.gz/2399457a1f96ed86f761f3bc771539d131eb684f: true
+  dsh-pet@https://codeload.github.com/PC2005-cloud/dsh-pet/tar.gz/a4d74e6b53db172bd89e831f909b924d58de2eb5#path:dsh-pet: true
+  dsh-pocket@https://codeload.github.com/shaobeichen/dsh-pocket/tar.gz/a0b953f67f0a99ba1c88e5a22b01e521c8ad82ef: true
+  dsh-recall-plugin@https://codeload.github.com/limbo947/dsh-recall-plugin/tar.gz/a62c449744360d1afb4dcaffa525fe42f7c90a7d: true
+  dsh-skills@https://codeload.github.com/CocoSgt/dsh-skills/tar.gz/e1eff623f3bd3e6c26a24d49a9ac953e28778cc9: true
+  dsh-usage-stats@https://codeload.github.com/Make0209/dsh-usage-stats/tar.gz/cedb51f6dd70f18a31adbcbda56d8469bb83ddd1: true
+  '@xueayi/dsh-opencode-go-usage@https://codeload.github.com/xueayi/dsh-opencode-go-usage/tar.gz/b663b49289c1befe3861a967ccb8bfc682983d46': true
+  dsh-context@https://codeload.github.com/bowenliang123/dsh-context/tar.gz/9aad20a20efa878f6b2d86df050d2545d7faf672: true
+  dsh-usage-stats@https://codeload.github.com/Make0209/dsh-usage-stats/tar.gz/8992d306cdca8857b4362868d591fde3689765b0: true
+  dsh-at-file@https://codeload.github.com/omdsh-dev/dsh-at-file/tar.gz/289f19bb83f80a95df49f567eeef42462d4da92f: true
+  dsh-client-auto-continue@https://codeload.github.com/HsiangNianian/dsh-auto-continue/tar.gz/5b7f241e639ec461a2bb471edbcc1aa15f41b37f: true
+  dsh-notification@https://codeload.github.com/omdsh-dev/dsh-notification/tar.gz/ddec603395a223deb46c75b74274c41849c6a131: true
+  dsh-pet@https://codeload.github.com/PC2005-cloud/dsh-pet/tar.gz/815c0f556911fbc95b96d347c71d714e4debd922#path:dsh-pet: true
+  dsh-pet@https://codeload.github.com/PC2005-cloud/dsh-pet/tar.gz/52b313c03c57e774eb25473c095df1fc945c6f9e#path:dsh-pet: true
+  dsh-pet@https://codeload.github.com/PC2005-cloud/dsh-pet/tar.gz/82ba588c7f849a62f1af5df81250e2ca8154c3a3#path:dsh-pet: true
+  dsh-pet@https://codeload.github.com/PC2005-cloud/dsh-pet/tar.gz/1684514b0f17dde5f2559cfd3298b291ae015a3b#path:dsh-pet: true
+  dsh-pocket@https://codeload.github.com/shaobeichen/dsh-pocket/tar.gz/ae62d7e92021007ac9aec285a6553d460b257e13: true
+  dsh-better-sidebar@https://codeload.github.com/omdsh-dev/DSH-better-sidebar/tar.gz/6c891514b544b6e2da51fdab2eb3436cc02da246: true
+  dsh-better-sidebar@https://codeload.github.com/omdsh-dev/DSH-better-sidebar/tar.gz/f268d35f8b11b043fe0a82fb38f755c7c9a09986: true
+  dsh-easyrewrite@https://codeload.github.com/Renzic-Stone/DSH-EasyRewrite/tar.gz/47ebb656216c634001a4f73f0de71bc63e017951: true
+  dsh-easyrewrite@https://codeload.github.com/Renzic-Stone/DSH-EasyRewrite/tar.gz/163e0263486d3c85ab061d781d4e216d9302fad8: true
+  dsh-easyrewrite@https://codeload.github.com/Renzic-Stone/DSH-EasyRewrite/tar.gz/1172ca10f6c1d595ad231f9a2a72af290682507d: true
+  dsh-easyrewrite@https://codeload.github.com/Renzic-Stone/DSH-EasyRewrite/tar.gz/9b3051f42547f4eba5ca692b7a67688cffa2c3ee: true
+  dsh-recall-plugin@https://codeload.github.com/limbo947/dsh-recall-plugin/tar.gz/b819544bf9512e8350d4c0ef46feef771954a9ac: true
+  dsh-at-file@https://github.com/omdsh-dev/dsh-at-file/archive/refs/tags/v0.6.7.tar.gz: true
+  dsh-pocket@https://codeload.github.com/shaobeichen/dsh-pocket/tar.gz/4cdd3ec04ab8943c0264c344ad4779c4727402ef: true
+  '@omdsh-dev/dsh-drag-and-drop@https://codeload.github.com/omdsh-dev/dsh-drag-and-drop/tar.gz/3b70ec46926a37d96d08d396f4948e4509126ecd': true
+  dsh-context@https://codeload.github.com/bowenliang123/dsh-context/tar.gz/0a028ace6f804705bbfffe2329379e46f5663a62: true
+  dsh-notification@https://github.com/omdsh-dev/dsh-notification/archive/refs/tags/v0.1.3.tar.gz: true
+  '@huanlin/dsh-plugin-merge-tool-calls@https://codeload.github.com/huanlinoto/dsh-plugin-merge-tool-calls/tar.gz/33495a1049320d5a794b6356d435a62675f88231': true
+  dsh-pocket@https://codeload.github.com/shaobeichen/dsh-pocket/tar.gz/52b5c949d5b861229920e6f22e102e117f2f0354: true
+  dsh-recall-plugin@https://codeload.github.com/limbo947/dsh-recall-plugin/tar.gz/0783e2aabf17cd904e5f4408d95e55ebe430ff0c: true
+  dsh-context@https://codeload.github.com/bowenliang123/dsh-context/tar.gz/61d3e16477947ba42d3fff54118ffb4fdec2a918: true
+  dsh-better-sidebar@https://codeload.github.com/omdsh-dev/DSH-better-sidebar/tar.gz/924f377fa1e9ebd2e819a016a6a21b42c724b714: true
+  dsh-at-file@https://github.com/omdsh-dev/dsh-at-file/archive/refs/tags/v0.6.8.tar.gz: true
+  '@huanlin/dsh-plugin-merge-tool-calls@https://codeload.github.com/huanlinoto/dsh-plugin-merge-tool-calls/tar.gz/8e3d650cbd4fed90201a95c8b646e2186e495936': true
+  dsh-pocket@https://codeload.github.com/shaobeichen/dsh-pocket/tar.gz/472524a45ef7b1ff6fbd9c3bf50787680a5497c3: true
+  dsh-pocket@https://codeload.github.com/shaobeichen/dsh-pocket/tar.gz/e108b817dfde9d815af9fee45dc594afa8cc0674: true
+  dshmarket@https://codeload.github.com/dsh-market/dsh-market/tar.gz/7f7bd53a89a99fb6f2e802cef7bd04ea792d7891: true
+  dshmarket@https://codeload.github.com/dsh-market/dsh-market/tar.gz/9bb879fa1f956e913d9077b669cbba04fdaa1bae: true
+  dshmarket@https://codeload.github.com/dsh-market/dsh-market/tar.gz/61ccc2dce42d7785bbc02c3a662b1e3008dca335: true
+  dsh-context@https://codeload.github.com/bowenliang123/dsh-context/tar.gz/46e52d136c3f16ae46d2ddff096b4d3b6224d1e7: true
+  dsh-pet@https://codeload.github.com/PC2005-cloud/dsh-pet/tar.gz/27533fd10e8b4268dd5d88e58bb65792c36326ca#path:dsh-pet: true
+  dsh-better-sidebar@https://codeload.github.com/omdsh-dev/DSH-better-sidebar/tar.gz/6f6568d29f24ec318294cd113b60ef01ba2c0449: true
+  dsh-better-sidebar@https://codeload.github.com/omdsh-dev/DSH-better-sidebar/tar.gz/4631a02db051e82dfd521dc7ff559c4651bf8b34: true
+  '@xueayi/dsh-opencode-go-usage@https://codeload.github.com/xueayi/dsh-opencode-go-usage/tar.gz/8e4b6894a5dd2ba33ac79610f6ebf08c27437ecd': true
+  dsh-pocket@https://codeload.github.com/shaobeichen/dsh-pocket/tar.gz/13e52db3ece072a17ee76fcd5125cebd66c809eb: true
+  dsh-recall-plugin@https://codeload.github.com/limbo947/dsh-recall-plugin/tar.gz/82bdda882c50dbbbc827a52e2248e29f33e94b98: true
+  dshmarket@git+https://github.com/dsh-market/dsh-market.git: true
+  dshmarket@https://codeload.github.com/dsh-market/dsh-market/tar.gz/8e0650f07de7775b146838fb37e3180e429773ec: true
+  dsh-recall-plugin@https://codeload.github.com/limbo947/dsh-recall-plugin/tar.gz/e5af64b5bae27bd8f30442318b87faadc6a1b079: true
+  dsh-better-reasoning-effort: true
+  dsh-better-reasoning-effort@git+https://github.com/HaoyueQin/dsh-better-reasoning-effort.git: true
+  dsh-better-reasoning-effort@https://codeload.github.com/HaoyueQin/dsh-better-reasoning-effort/tar.gz/b7ce7fab41d4d24e82d0d30b3b41542cc3f98662: true
+  dsh-pocket@https://codeload.github.com/shaobeichen/dsh-pocket/tar.gz/eb255032991949d95c896f762e681c19e622cbdc: true
+  dsh-easyrewrite: true
+  dsh-easyrewrite@git+https://github.com/Renzic-Stone/DSH-EasyRewrite.git: true
+  dsh-easyrewrite@https://codeload.github.com/Renzic-Stone/DSH-EasyRewrite/tar.gz/cce44fbb2bfbdbc569d50bfb711ac9cd8ad203a2: true
+
+minimumReleaseAgeExclude:
+  - dsh-better-sidebar
+  - '@khorsheed/dsh-ankh-guard'
+  - '@sanqi-normal/dsh-webui-market-plugin'
+  - '@anionex/dsh-turn-rewind'
+  - dshmarket
+  - '@liustack/modlens@3.16.5 || 3.20.0 || 3.21.1 || 3.22.1'
+  - dsh-context@0.21.1 || 0.24.1
+  - '@nanmicoder/dsh-agent-teams@0.1.11 || 0.1.12'
+  - '@michengai/dsh-archive-manager@0.1.14 || 0.1.18 || 0.1.19 || 0.1.29'
+  - billion-context-dsh@0.2.13 || 0.2.15 || 0.2.19 || 0.2.21
+  - dsh-pet@0.2.3 || 0.2.6
+  - '@hytime/dsh-thinking-effort@0.1.12'
+  - dsh-recall-plugin@2.3.6

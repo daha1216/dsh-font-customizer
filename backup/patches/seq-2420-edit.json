@@ -1,0 +1,10 @@
+{
+ "seq": 2420,
+ "time": "2026-09-05T17:38:19.198Z",
+ "tool": "edit",
+ "args": {
+  "file_path": "C:\\Users\\daha\\.dsh\\profiles\\web\\node_modules\\dsh-pocket\\lib\\proxy.mjs",
+  "new_string": "              res.writeHead(200, { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'no-store' });\n              res.end(loginPageHtml(true, isPublic, 0, preservedQuery(req.url)));",
+  "old_string": "              res.writeHead(200, { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'no-store' });\n              res.end(loginPageHtml(true, isPublic, 0));"
+ }
+}
