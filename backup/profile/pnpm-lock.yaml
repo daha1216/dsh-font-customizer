@@ -5,6 +5,7 @@ settings:
   excludeLinksFromLockfile: false
 
 patchedDependencies:
+  '@xueayi/dsh-opencode-go-usage@0.1.6': 21653f74ab32e22bb6ba8b7778b97e61f2f762c104fd689b134f5092dd5b2e93
   dsh-pocket@2.10.3: aad343bdb729861a31f1bbdf4aa48a5f6a212b55775e08d063b960244256a35e
 
 importers:
@@ -22,7 +23,7 @@ importers:
         version: 0.1.0
       '@xueayi/dsh-opencode-go-usage':
         specifier: github:xueayi/dsh-opencode-go-usage
-        version: https://codeload.github.com/xueayi/dsh-opencode-go-usage/tar.gz/8e4b6894a5dd2ba33ac79610f6ebf08c27437ecd
+        version: https://codeload.github.com/xueayi/dsh-opencode-go-usage/tar.gz/8e4b6894a5dd2ba33ac79610f6ebf08c27437ecd(patch_hash=21653f74ab32e22bb6ba8b7778b97e61f2f762c104fd689b134f5092dd5b2e93)
       billion-context-dsh:
         specifier: ^0.2.21
         version: 0.2.21
@@ -1429,7 +1430,7 @@ snapshots:
       d3-selection: 3.0.0
       d3-transition: 3.0.1(d3-selection@3.0.0)
 
-  '@xueayi/dsh-opencode-go-usage@https://codeload.github.com/xueayi/dsh-opencode-go-usage/tar.gz/8e4b6894a5dd2ba33ac79610f6ebf08c27437ecd':
+  '@xueayi/dsh-opencode-go-usage@https://codeload.github.com/xueayi/dsh-opencode-go-usage/tar.gz/8e4b6894a5dd2ba33ac79610f6ebf08c27437ecd(patch_hash=21653f74ab32e22bb6ba8b7778b97e61f2f762c104fd689b134f5092dd5b2e93)':
     dependencies:
       '@deepseek-ai/schemastery': 3.18.1
 

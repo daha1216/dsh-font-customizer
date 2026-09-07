@@ -15,7 +15,7 @@
 | `patches/` | 24 个补丁步骤 JSON（seq-454 → seq-2563，从会话转录 `session.v2.jsonl.zstd` 恢复的 write/edit 原文），供 `replay-patches.mjs` 重放 |
 | `tools/dsh-pocket/` | 9 个维护脚本：`apply-rc1-mobile-compat.ps1`（rc.1 loopback 补丁）、`sync-dsh-web-mobile.mjs`（upstream 镜像 + esbuild 重建）、`detached-restart.cjs`（25s 熔断重启）、`detached-install-restart.cjs`（杀 web → install → 重启）、`detached-patch-orchestrator.cjs`（补丁重生成编排）、`auto-restore.mjs`（postinstall 自愈）、`apply-pin-patch.ps1`、`patch-native-tostring.mjs`、`ssl-recovery-watch.mjs` |
 | `tools/restore/` | 补丁重放工具链：`replay-patches.mjs`、`dump-zstd.mjs`（多帧 zstd 转录解压）、`extract-patches.mjs` |
-| `profile/` | 重装 pocket 所需的 4 个 profile 文件：`package.json`（含 postinstall 自愈）、`pnpm-lock.yaml`、`pnpm-workspace.yaml`（含 patchedDependencies 登记）、`.npmrc`；另有 `patches/` 子目录（写死补丁本体 `dsh-pocket@2.10.3.patch`） |
+| `profile/` | 重装 pocket 所需的 4 个 profile 文件：`package.json`（含 postinstall 自愈）、`pnpm-lock.yaml`、`pnpm-workspace.yaml`（含 patchedDependencies 登记）、`.npmrc`；另有 `patches/` 子目录（写死补丁本体：`dsh-pocket@2.10.3.patch` + `@xueayi__dsh-opencode-go-usage@0.1.6.patch`） |
 | `MANIFEST.json` | 快照清单 + 补丁标记核验（`patched` 下应全为 `true`） |
 
 敏感文件**从不**入库：`restart-and-setpin.ps1`（明文 PIN）、`cloudflare-api.md`（隧道 token）、
@@ -83,8 +83,14 @@ node "%USERPROFILE%\.dsh\dsh-pocket\detached-restart.cjs"
 
 - **dsh-pet** 手机禁用守卫：已由 postinstall 自愈脚本（`auto-restore.mjs`）在每次 install 后
   自动重注入；手动重跑：`node ~/.dsh/skills/pet-mobile/scripts/set-mobile.mjs --disable --profile web`
-- **@xueayi/dsh-opencode-go-usage** 浮动 dock 的手机端禁用：未纳入备份（原 edit 需从
-  会话转录 `seq 583/593/595` 恢复，锚点在 23:04 wipe 后的版本上不再匹配）。
+- **@xueayi/dsh-opencode-go-usage** 浮动 dock 的手机端禁用（2026-09-08 起已写死）：
+  `profile/pnpm-workspace.yaml` 登记
+  `'@xueayi/dsh-opencode-go-usage@0.1.6' -> patches/@xueayi__dsh-opencode-go-usage@0.1.6.patch`，
+  内容 = `lib/client.js` 的 isMobile 判定块（pointer: coarse + <768px）+ `apply()` 入口
+  `if (isMobile()) return;`（纯修改、零删除条目）。守卫失效时手动重放：
+  `pnpm patch '@xueayi/dsh-opencode-go-usage'` → 把带守卫的 `lib/client.js`
+  （备份 MANIFEST 校验过的状态）覆盖进 staging → `pnpm patch-commit <staging>`，
+  全程需 web 停机，可参考 `tools/dsh-pocket/detached-opencode-commit.cjs` 的封装顺序。
 
 ## 已知坑
 

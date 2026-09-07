@@ -117,4 +117,5 @@ minimumReleaseAgeExclude:
   - '@hytime/dsh-thinking-effort@0.1.12'
   - dsh-recall-plugin@2.3.6
 patchedDependencies:
+  '@xueayi/dsh-opencode-go-usage@0.1.6': patches/@xueayi__dsh-opencode-go-usage@0.1.6.patch
   dsh-pocket@2.10.3: patches/dsh-pocket@2.10.3.patch

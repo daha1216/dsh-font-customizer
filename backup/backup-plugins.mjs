@@ -29,7 +29,7 @@ const ONLY = (process.argv[2] ?? '').replace(/^--only=/, '') || null // e.g. `no
 const PROFILE_FILES = ONLY
   ? ['package.json', 'pnpm-lock.yaml', 'pnpm-workspace.yaml', '.npmrc'] // pocket-only: files that pin/reinstall dsh-pocket
   : ['package.json', 'pnpm-lock.yaml', 'pnpm-workspace.yaml', 'cordis.yml', 'cordis.patch.yml', 'settings.yaml', '.npmrc']
-const TOOLBOX = ['apply-pin-patch.ps1', 'apply-rc1-mobile-compat.ps1', 'detached-restart.cjs', 'detached-install-restart.cjs', 'detached-patch-orchestrator.cjs', 'auto-restore.mjs', 'patch-native-tostring.mjs', 'ssl-recovery-watch.mjs', 'sync-dsh-web-mobile.mjs']
+const TOOLBOX = ['apply-pin-patch.ps1', 'apply-rc1-mobile-compat.ps1', 'detached-restart.cjs', 'detached-install-restart.cjs', 'detached-patch-orchestrator.cjs', 'detached-opencode-commit.cjs', 'auto-restore.mjs', 'patch-native-tostring.mjs', 'ssl-recovery-watch.mjs', 'sync-dsh-web-mobile.mjs']
 // restart-and-setpin.ps1 故意不备份：内含明文 PIN。
 const EXCLUDE_SUBDIRS = new Set(['node_modules'])
 const EXCLUDE_BY_PKG = { 'dsh-pet': ['assets'] } // 57MB upstream assets, unmodified
@@ -96,15 +96,22 @@ for (const name of selected) {
   const { files, bytes } = copyPkg(name)
   const version = JSON.parse(readFileSync(join(nm, name, 'package.json'), 'utf8')).version
   manifest.packages[name] = { version, spec: deps[name], files, bytes }
-  const markers = PATCH_MARKERS[name]
-  if (markers) {
-    manifest.patched[name] = {}
-    for (const [f, keys] of Object.entries(markers)) {
+  console.log(`✓ ${name} @${version} — ${files} files, ${(bytes / 1024).toFixed(0)} KB`)
+}
+
+// patch markers are checked against LIVE node_modules for every known plugin,
+// independent of which packages got copied (pocket-only mode still records pet/opencode state)
+manifest.patched = {}
+for (const [name, markers] of Object.entries(PATCH_MARKERS)) {
+  manifest.patched[name] = {}
+  for (const [f, keys] of Object.entries(markers)) {
+    try {
       const text = readFileSync(join(nm, name, f), 'utf8')
       manifest.patched[name][f] = Object.fromEntries(keys.map((k) => [k, text.includes(k)]))
+    } catch {
+      manifest.patched[name][f] = Object.fromEntries(keys.map((k) => [k, false]))
     }
   }
-  console.log(`✓ ${name} @${version} — ${files} files, ${(bytes / 1024).toFixed(0)} KB`)
 }
 
 // ---- profile install definition ----

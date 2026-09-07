@@ -1,5 +1,5 @@
 {
-  "time": "2026-09-07T23:05:22.857Z",
+  "time": "2026-09-07T23:16:46.302Z",
   "source": "C:\\Users\\daha\\.dsh\\profiles\\web",
   "only": "dsh-pocket",
   "packages": {
@@ -25,6 +25,16 @@
       "client/client.js": {
         "POCKET_EXTRA_CSS": true,
         "fileGuard": true
+      }
+    },
+    "dsh-pet": {
+      "lib/client.js": {
+        "isMobile": true
+      }
+    },
+    "@xueayi/dsh-opencode-go-usage": {
+      "lib/client.js": {
+        "isMobile": true
       }
     }
   }
