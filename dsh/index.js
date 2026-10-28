@@ -98,6 +98,42 @@ function sendJson(res, status, obj) {
   res.end(body)
 }
 
+/**
+ * 请求栅栏：与 dsh-skills-manager / dsh-update-checker 同一套防线——Host 必须是
+ * loopback（浏览器里只有本机 dsh web 这一个来源），拒绝 cross-site fetch，带 Origin
+ * 时必须与 Host 一致。没有它，用户访问的任意网页都能跨站 POST 改写字体配置
+ * （no-cors/simple request 不需要预检，写入会直接发生），DNS rebinding 还能读。
+ */
+function assertTrustedRequest(req) {
+  const reject = (msg) => {
+    const err = new Error(msg)
+    err.status = 403
+    throw err
+  }
+  const host = req.headers.host
+  if (typeof host !== 'string' || host === '') reject('missing Host header')
+  let hostUrl
+  try { hostUrl = new URL(`http://${host}`) } catch { reject('invalid Host header') }
+  if (hostUrl.username !== '' || hostUrl.password !== '' || hostUrl.pathname !== '/' || hostUrl.search !== '' || hostUrl.hash !== '') {
+    reject('invalid Host header')
+  }
+  const hostname = hostUrl.hostname.toLowerCase().replace(/^\[|\]$/g, '')
+  const loopback = hostname === 'localhost'
+    || hostname.endsWith('.localhost')
+    || hostname === '::1'
+    || /^127(?:\.\d{1,3}){3}$/.test(hostname)
+  if (!loopback) reject('config route only allows loopback hosts')
+  if (String(req.headers['sec-fetch-site'] ?? '').toLowerCase() === 'cross-site') {
+    reject('cross-site requests are refused')
+  }
+  const origin = req.headers.origin
+  if (origin !== undefined) {
+    let originUrl
+    try { originUrl = new URL(origin) } catch { reject('invalid Origin header') }
+    if (originUrl.host !== hostUrl.host) reject('Origin does not match Host')
+  }
+}
+
 function apply(ctx) {
   ctx.effect(
     () =>
@@ -106,6 +142,7 @@ function apply(ctx) {
         path: ROUTE_PREFIX,
         handler: async (req, res) => {
           try {
+            assertTrustedRequest(req)
             const url = new URL(req.url ?? '/', 'http://localhost')
             if (url.pathname === ROUTE_PREFIX + '/config') {
               if (req.method === 'GET') {
@@ -129,7 +166,7 @@ function apply(ctx) {
             }
             sendJson(res, 404, { error: 'not found' })
           } catch (err) {
-            sendJson(res, 500, { error: err instanceof Error ? err.message : String(err) })
+            sendJson(res, err?.status ?? 500, { error: err instanceof Error ? err.message : String(err) })
           }
         },
       }),
