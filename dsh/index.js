@@ -7,7 +7,8 @@
 //
 // 零运行时依赖：只用 node:fs / node:os / node:path 内置模块。
 
-import { mkdirSync, readFileSync, renameSync, writeFileSync } from 'node:fs'
+import { mkdirSync, readFileSync, renameSync, unlinkSync, writeFileSync } from 'node:fs'
+import { randomBytes } from 'node:crypto'
 import { homedir } from 'node:os'
 import { join } from 'node:path'
 
@@ -54,13 +55,48 @@ function readConfig() {
   }
 }
 
-/** 原子写：先写 .tmp 再 rename，进程中断不会留下半截 JSON。 */
+/**
+ * Windows 上 rename 覆盖一个正被其他进程持有的目标会返回 EPERM/EBUSY/EACCES。
+ * 这类错误是瞬时的（对方只是刚打开又关闭），重试若干次即可；真错误照旧抛出。
+ * 用 Atomics.wait 做同步小睡，避免自旋烧 CPU。
+ */
+const SLEEP_BUFFER = new Int32Array(new SharedArrayBuffer(4))
+function sleepSync(ms) {
+  Atomics.wait(SLEEP_BUFFER, 0, 0, ms)
+}
+function renameWithRetry(from, to, attempts = 25) {
+  for (let i = 0; ; i++) {
+    try {
+      renameSync(from, to)
+      return
+    } catch (error) {
+      const code = error && error.code
+      const transient = code === 'EPERM' || code === 'EBUSY' || code === 'EACCES'
+      if (!transient || i >= attempts - 1) throw error
+      sleepSync(Math.min(2 + i * 2, 40))
+    }
+  }
+}
+
+/**
+ * 原子写：先写临时文件再 rename，进程中断不会留下半截 JSON。
+ *
+ * 临时文件名必须唯一：固定用 `.tmp` 时，两个并发 PUT 会写同一个临时文件，
+ * 后者的 rename 可能把前者只写了一半的内容换上去；读侧 JSON.parse 失败后
+ * 静默回落 DEFAULTS，用户的字体设置就被无声重置了。
+ */
 function writeConfig(cfg) {
   const clean = sanitize(cfg)
   mkdirSync(configDir(), { recursive: true })
-  const tmp = configPath() + '.tmp'
-  writeFileSync(tmp, JSON.stringify(clean, null, 2) + '\n', 'utf8')
-  renameSync(tmp, configPath())
+  const target = configPath()
+  const tmp = `${target}.tmp-${process.pid}-${randomBytes(6).toString('hex')}`
+  try {
+    writeFileSync(tmp, JSON.stringify(clean, null, 2) + '\n', 'utf8')
+    renameWithRetry(tmp, target)
+  } catch (error) {
+    try { unlinkSync(tmp) } catch { /* 临时文件可能根本没建成 */ }
+    throw error
+  }
   return clean
 }
 
