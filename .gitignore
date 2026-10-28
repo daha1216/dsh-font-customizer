@@ -2,3 +2,6 @@ node_modules/
 *.log
 .DS_Store
 .backup-*/
+
+# 本机恢复工具链与第三方插件快照，不属于产品源码，不入库
+backup/
